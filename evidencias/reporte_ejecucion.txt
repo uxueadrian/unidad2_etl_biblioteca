@@ -1,0 +1,7 @@
+FILAS LEIDAS: 100
+FILAS CARGADAS: 98
+FILAS RECHAZADAS: 2
+ESTADO: FINALIZADO_CON_ERRORES
+
+5099 - total_multa incorrecto
+5002 - id_prestamo duplicado
