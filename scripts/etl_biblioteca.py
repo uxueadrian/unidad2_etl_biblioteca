@@ -6,6 +6,7 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 CSV_PATH = BASE_DIR / "data" / "prestamos_biblioteca_100.csv"
+NOMBRE_ALUMNO = "Adrian Uxue Chavez Martinez"
 
 engine = create_engine("mysql+pymysql://root:root@localhost:3306/biblioteca_dw")
 
@@ -26,6 +27,12 @@ def limpiar_datos(df):
 
     for c in ["dias_prestamo", "multa_diaria", "total_multa"]:
         df[c] = pd.to_numeric(df[c], errors="coerce")
+
+    obligatorias = ["id_prestamo", "fecha_prestamo", "alumno", "carrera", "libro", "categoria", "dias_prestamo", "multa_diaria", "sede", "total_multa"]
+    filas_antes = len(df)
+    df = df.dropna(subset=obligatorias)
+    if len(df) < filas_antes:
+        print(f"ADVERTENCIA: Se eliminaron {filas_antes - len(df)} filas con valores nulos en columnas obligatorias")
 
     return df
 
@@ -246,14 +253,19 @@ def cargar_log(leidas, cargadas, rechazadas, estado):
 def generar_reporte(leidas, cargadas, rechazadas, estado, errores):
     os.makedirs("evidencias", exist_ok=True)
     path = "evidencias/reporte_ejecucion.txt"
+    ahora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     with open(path, "w", encoding="utf-8") as f:
+        f.write(f"NOMBRE DEL ALUMNO: {NOMBRE_ALUMNO}\n")
+        f.write(f"FECHA Y HORA DE EJECUCION: {ahora}\n")
+        f.write(f"ARCHIVO PROCESADO: prestamos_biblioteca_100.csv\n")
         f.write(f"FILAS LEIDAS: {leidas}\n")
         f.write(f"FILAS CARGADAS: {cargadas}\n")
         f.write(f"FILAS RECHAZADAS: {rechazadas}\n")
         f.write(f"ESTADO: {estado}\n\n")
+        f.write("ERRORES DETECTADOS:\n")
         for e in errores:
-            f.write(f"{e['id_registro']} - {e['descripcion_error']}\n")
+            f.write(f"  {e['id_registro']} - {e['descripcion_error']}\n")
 
     return path
 

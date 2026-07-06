@@ -1,7 +1,11 @@
+NOMBRE DEL ALUMNO: Adrian Uxue Chavez Martinez
+FECHA Y HORA DE EJECUCION: 2026-07-05 23:36:53
+ARCHIVO PROCESADO: prestamos_biblioteca_100.csv
 FILAS LEIDAS: 100
 FILAS CARGADAS: 98
 FILAS RECHAZADAS: 2
 ESTADO: FINALIZADO_CON_ERRORES
 
-5099 - total_multa incorrecto
-5002 - id_prestamo duplicado
+ERRORES DETECTADOS:
+  5099 - total_multa incorrecto
+  5002 - id_prestamo duplicado

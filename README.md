@@ -26,3 +26,63 @@ El objetivo es practicar:
 
 ```bash
 pip install pandas sqlalchemy pymysql
+```
+
+---
+
+## 3. Cómo crear la base de datos
+
+Crea la base de datos `biblioteca_dw` manualmente desde MySQL o DataGrip:
+
+```sql
+CREATE DATABASE biblioteca_dw;
+```
+
+El script crea las tablas automáticamente al ejecutarse.
+
+---
+
+## 4. Cómo instalar librerías
+
+Ejecuta el siguiente comando:
+
+```bash
+pip install pandas sqlalchemy pymysql
+```
+
+---
+
+## 5. Cómo ejecutar el script
+
+Ejecuta el ETL desde la raíz del proyecto:
+
+```bash
+python scripts/etl_biblioteca.py
+```
+
+El script:
+- Lee el dataset desde `data/prestamos_biblioteca_100.csv`
+- Limpia y transforma los datos
+- Valida registros duplicados y total_multa incorrecto
+- Carga datos válidos en el Data Warehouse
+- Registra errores en `etl_errores`
+- Genera bitácora en `etl_log`
+- Produce el reporte en `evidencias/reporte_ejecucion.txt`
+
+---
+
+## 6. Resultado esperado
+
+```
+LEIDAS: 100
+CARGADAS: 98
+RECHAZADAS: 2
+ESTADO: FINALIZADO_CON_ERRORES
+```
+
+Errores detectados:
+- `id_prestamo 5099`: total_multa incorrecto (esperado 70, real 40)
+- `id_prestamo 5002`: id_prestamo duplicado (segunda aparición rechazada)
+
+La tabla `fact_prestamos` debe contener 98 registros.
+La tabla `etl_errores` debe contener 2 registros.
